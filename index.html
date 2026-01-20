@@ -6,49 +6,41 @@
   <style>
     /* 背景画像の設定 */
     body {
-      background-image: url('script/image/shogi_title.PNG'); /* 背景画像の指定 */
-      background-size: cover; /* 画像を全体に合わせてリサイズ */
-      background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
-      background-position: center center; /* 画像を中央に配置 */
-      background-attachment: fixed; /* スクロールしても背景が動かないように設定 */
+      background-image: url('script/image/shogi_title.PNG');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       display: flex;
-      justify-content: center;  /* 横方向中央揃え */
-      align-items: center;      /* 縦方向中央揃え */
-      height: 100vh;            /* 画面の高さを100%に設定 */
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
-    /* メニューのスタイル */
-    #menu {
-      text-align: center;       /* テキストを中央に配置 */
-      margin-bottom: 50px;      /* 下に少しスペースを作成 */
+    /* メニューコンテナのスタイル */
+    #menu, #practiceMenu, #onePlayerModeSelect, #onePlayerNormalMenu, #onePlayerHardMenu {
+      text-align: center;
+      margin-bottom: 50px;
     }
 
-    h1 {
+    /* 初期状態で非表示にするメニュー */
+    #practiceMenu, #onePlayerModeSelect, #onePlayerNormalMenu, #onePlayerHardMenu {
+      display: none;
+      margin-bottom: 300px;
+    }
+
+    h1, h2 {
       font-size: 5rem;
-      color: #FFB347; /* 薄いオレンジ色に変更 */
+      color: #FFB347;
       margin-bottom: 20px;
-      text-shadow: 2px 2px 5px rgba(0, 128, 0, 0.7), -2px -2px 5px rgba(0, 128, 0, 0.7); /* 緑色の縁取り */
+      text-shadow: 2px 2px 5px rgba(0, 128, 0, 0.7), -2px -2px 5px rgba(0, 128, 0, 0.7);
     }
 
-    h2 {
-      font-size: 5rem;
-      color: #FFB347; /* 薄いオレンジ色に変更 */
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 5px rgba(0, 128, 0, 0.7), -2px -2px 5px rgba(0, 128, 0, 0.7); /* 緑色の縁取り */
-    }
-
-    /* 難易度選択メニュー（共通スタイル） */
-    #practiceMenu, #onePlayerMenu {
-      text-align: center;  /* テキストを中央に配置 */
-      display: none;       /* 初期状態で非表示 */
-      margin-bottom: 300px;      /* 下に少しスペースを作成 */
-    }
-
-    /* 難易度選択ボタンのスタイル（共通スタイル） */
-    #practiceMenu button, #onePlayerMenu button {
+    /* 通常ボタンの共通スタイル */
+    button {
       width: 200px;
       height: 70px;
       margin: 10px 0;
@@ -57,42 +49,40 @@
       border-radius: 5px;
       color: white;
       border: none;
+      background-color: rgba(0, 0, 0, 0.5);
       transition: background-color 0.3s;
     }
 
-    #practiceMenu button:hover, #onePlayerMenu button:hover {
-      background-color: #45a049; /* ホバー時の色 */
+    button:hover {
+      background-color: #45a049;
     }
 
-    /* メインメニューのボタン */
-    #menu button {
-      width: 200px;
-      height: 70px;
-      margin: 10px 0;
-      font-size: 20px;
-      cursor: pointer;
-      border-radius: 5px;
-      color: white;
-      border: none;
-      transition: background-color 0.3s;
+    /* 【追加】もどるボタン専用のスタイル */
+    button.back-btn {
+      width: 120px;       /* 横幅を小さく */
+      height: 50px;       /* 高さを小さく */
+      font-size: 16px;    /* 文字サイズを少し小さく */
+      background-color: rgba(255, 165, 0, 0.5); /* 緑色 */
+      margin-top: 30px;   /* 上のボタンとの間隔を空ける */
+  
     }
 
-    #menu button:hover {
-      background-color: #45a049; /* ホバー時の色 */
+    button.back-btn:hover {
+      background-color: #1e7e34; /* ホバー時は濃い緑 */
     }
 
-    /* お知らせボックスのスタイル */
+    /* お知らせボックス */
     #announcementBox {
-      width: 300px;  /* 幅を固定 */
-      height: 200px; /* 高さを固定 */
-      background-color: rgba(255, 165, 0, 0.5); /* 半透明のオレンジ色 */
+      width: 300px;
+      height: 200px;
+      background-color: rgba(255, 165, 0, 0.5);
       padding: 20px;
       border-radius: 10px;
-      margin-top: 20px; /* ボタンの直下に配置 */
+      margin-top: 20px;
       text-align: center;
       overflow-y: auto; 
-      margin-left: auto;  /* 左右中央に揃える */
-      margin-right: auto; /* 左右中央に揃える */
+      margin-left: auto;
+      margin-right: auto;
     }
 
     #announcementBox h3 {
@@ -105,24 +95,6 @@
       font-size: 18px;
       color: white;
     }
-
-    /* ボタン共通のスタイル */
-    button {
-      font-size: 1.5rem;
-      padding: 15px 30px;
-      margin: 10px;
-      cursor: pointer;
-      background-color: rgba(0, 0, 0, 0.5); /* 背景色を薄く */
-      color: white; /* ボタンの文字色を白に */
-      border: none;
-      border-radius: 5px;
-      transition: background-color 0.3s;
-    }
-
-    button:hover {
-      background-color: rgba(0, 0, 0, 0.8); /* ホバー時に色を濃く */
-    }
-
   </style>
 </head>
 <body>
@@ -137,10 +109,11 @@
       <h3>お知らせ</h3>
       <p>
         「れんしゅう」モードを実装しました。<br><br>
+        「ほんき」モードを実装しました。<br><br>
         CPUが止まってしまう問題を修正しました。<br><br>
         タイマーを追加しました。<br><br>
         最終更新<br>
-        2016年1月21日 0時15分
+        2016年1月21日 5時15分
       </p>
     </div>
   </div>
@@ -150,34 +123,84 @@
     <button onclick="startGame('saijaku')">たわむれ</button>
     <button onclick="startGame('easy')">おあそび</button>
     <button onclick="startGame('normal')">たしなみ</button>
+    <br>
+    <button class="back-btn" onclick="backToMain()">もどる</button>
   </div>
 
-  <div id="onePlayerMenu">
+  <div id="onePlayerModeSelect">
+    <h2>モード選択</h2>
+    <button onclick="showOnePlayerNormal()">ふつう</button>
+    <button onclick="showOnePlayerHard()">ほんき</button>
+    <br>
+    <button class="back-btn" onclick="backToMain()">もどる</button>
+  </div>
+
+  <div id="onePlayerNormalMenu">
     <h2>対戦相手選択</h2>
     <button onclick="startGame('hard1')">こみや</button>
     <button onclick="startGame('hard2')">しおや</button>
+    <br>
+    <button class="back-btn" onclick="backToOnePlayerMode()">もどる</button>
+  </div>
+
+  <div id="onePlayerHardMenu">
+    <h2>対戦相手選択</h2>
+    <button onclick="startGame('ex_hard1')">こみや２</button>
+    <button onclick="startGame('ex_hard2')">しおや２</button>
+    <br>
+    <button class="back-btn" onclick="backToOnePlayerMode()">もどる</button>
   </div>
 
   <script>
     function startPlayerVsPlayer() {
-      // プレイヤー同士の対戦モードを開始
       window.location.href = "player_vs_player.html"; 
     }
 
-    // 「れんしゅう」メニューを表示する関数
+    // --- 画面遷移（進む） ---
+
     function showPracticeMenu() {
       document.getElementById('menu').style.display = 'none';
       document.getElementById('practiceMenu').style.display = 'block';
     }
 
-    // 「ひとりで」メニューを表示する関数
     function showOnePlayerMenu() {
       document.getElementById('menu').style.display = 'none';
-      document.getElementById('onePlayerMenu').style.display = 'block';
+      document.getElementById('onePlayerModeSelect').style.display = 'block';
     }
 
+    function showOnePlayerNormal() {
+      document.getElementById('onePlayerModeSelect').style.display = 'none';
+      document.getElementById('onePlayerNormalMenu').style.display = 'block';
+    }
+
+    function showOnePlayerHard() {
+      document.getElementById('onePlayerModeSelect').style.display = 'none';
+      document.getElementById('onePlayerHardMenu').style.display = 'block';
+    }
+
+    // --- 画面遷移（もどる） ---
+
+    // タイトル画面（メインメニュー）に戻る
+    function backToMain() {
+      // 全てのサブメニューを非表示にする
+      document.getElementById('practiceMenu').style.display = 'none';
+      document.getElementById('onePlayerModeSelect').style.display = 'none';
+      // メインメニューを表示
+      document.getElementById('menu').style.display = 'block';
+    }
+
+    // 「ひとりで」のモード選択画面に戻る
+    function backToOnePlayerMode() {
+      // 対戦相手選択画面を非表示にする
+      document.getElementById('onePlayerNormalMenu').style.display = 'none';
+      document.getElementById('onePlayerHardMenu').style.display = 'none';
+      // モード選択画面を表示
+      document.getElementById('onePlayerModeSelect').style.display = 'block';
+    }
+
+    // --- ゲーム開始 ---
+
     function startGame(difficulty) {
-      // 選択された難易度に応じたページに遷移
       if (difficulty === 'saijaku') {
         window.location.href = "cpu_tawamure.html";
       } else if (difficulty === 'easy') {
@@ -188,10 +211,13 @@
         window.location.href = "cpu_komiya.html";
       } else if (difficulty === 'hard2') {
         window.location.href = "cpu_shioya.html";
+      } else if (difficulty === 'ex_hard1') {
+        window.location.href = "ex_cpu_komiya.html";
+      } else if (difficulty === 'ex_hard2') {
+        window.location.href = "ex_cpu_shioya.html";
       }
     }
   </script>
 
 </body>
-
 </html>
