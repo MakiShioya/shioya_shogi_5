@@ -14,8 +14,8 @@ body {
 #checkStatus { color: red; font-weight: bold; margin-bottom: 10px; }
 table { border-collapse: collapse; background: #deb887; }
 td { width: 50px; height: 50px; border: 1px solid #333; text-align: center; vertical-align: middle; font-size: 24px; cursor: pointer; user-select: none; }
-td.selected { background: yellow; }
-td.move { background: #90ee90; }
+td.selected { background: orange; }/* 持った時の色 */
+td.move { background: rgba(255, 165, 0, 0.5); }/* 移動できる場所 */
 
 /* 駒台の設定 */
 
@@ -86,7 +86,7 @@ td.move { background: #90ee90; }
   background: #f5deb3;
 }
 
-.hand span.selected { background: yellow; }
+.hand span.selected { background: orange; }
 #controls { margin-top: 10px; text-align: center; }
 button { padding: 6px 12px; font-size: 14px; cursor: pointer; }
 
@@ -181,7 +181,7 @@ button { padding: 6px 12px; font-size: 14px; cursor: pointer; }
 
 /* 移動した場所に色をつける */
 .moved {
-  background-color: #f58220; /* 明るい黄色 */
+  background-color: #71b569; /* 明るい黄色 */
 }
 
 /* --- ここから追加 --- */
