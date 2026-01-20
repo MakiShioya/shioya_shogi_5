@@ -142,7 +142,13 @@ button { padding: 6px 12px; font-size: 14px; cursor: pointer; }
      1px -1px 0 white,
     -1px  1px 0 white,
      1px  1px 0 white;
+  transition: all 0.3s; /* 滑らかに変化させる */
+}
 
+/* 待ったボタン：ホバー時 */
+#undoBtn:hover {
+  background-image: url('image/hyoshiki.PNG');
+  box-shadow: 0 0 15px 5px red; /* 赤く光る */
 }
 
 /* 投了ボタンのスタイル */
@@ -163,7 +169,13 @@ button { padding: 6px 12px; font-size: 14px; cursor: pointer; }
      1px -1px 0 white,
     -1px  1px 0 white,
      1px  1px 0 white;
+  transition: all 0.3s; /* 滑らかに変化させる */
+}
 
+/* 投了ボタン：ホバー時 */
+#resignBtn:hover {
+  background-image: url('image/hyoshiki_red.PNG');
+  box-shadow: 0 0 15px 5px blue; /* 青く光る */
 }
 
 
@@ -171,5 +183,3 @@ button { padding: 6px 12px; font-size: 14px; cursor: pointer; }
 .moved {
   background-color: #f58220; /* 明るい黄色 */
 }
-
-
