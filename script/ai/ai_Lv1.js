@@ -319,9 +319,9 @@ function evaluateBoard(player) {
       }
     }
   }
-  hands[player].forEach(p => score += (pieceValues[p] || 0) * 1.1);
+  hands[player].forEach(p => score += (pieceValues[p] || 0) * 0.99);
   const opponent = player === "black" ? "white" : "black";
-  hands[opponent].forEach(p => score -= (pieceValues[p] || 0) * 1.1);
+  hands[opponent].forEach(p => score -= (pieceValues[p] || 0) * 0.99);
   return score;
 }
 
@@ -501,4 +501,5 @@ function minimax(depth, isMaximizing, alpha, beta) {
     }
     return minEval;
   }
+
 }
