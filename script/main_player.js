@@ -1,4 +1,4 @@
-// main.js
+// main.js (PvP Version)
 
 // DOM要素の参照
 const board = document.getElementById("board");
@@ -203,11 +203,6 @@ function renderHands() {
 function onCellClick(x, y) {
   if (gameOver) return;
 
-  // CPU手番中は操作不可
-  //if (cpuEnabled && turn === cpuSide) {
-  //  return;
-  //}
-
   // 駒未選択時：自分の駒を選択
   if (!selected) {
     const piece = boardState[y][x];
@@ -288,31 +283,55 @@ function movePieceWithSelected(sel, x, y) {
     if (!isPromoted && canPromote(base) &&
        (isInPromotionZone(sel.y, player) || isInPromotionZone(y, player))) {
 
-      if (cpuEnabled && turn === cpuSide) {
-        // CPUは条件を満たせば必ず成る（AIロジックによる）
+      // --- 【ここから】成り確認とエフェクト ---
+      
+      let doPromote = false;
+
+      // 強制成りの条件（歩・香・桂馬が行き所のない場所へ行く場合）
+      const mustPromote =
+        (base === "P" || base === "L") && (y === (player === "black" ? 0 : 8)) ||
+        (base === "N") && (y === (player === "black" ? 0 : 8) || y === (player === "black" ? 1 : 7));
+      
+      if (mustPromote || confirm("成りますか？")) {
+        doPromote = true;
+      } else {
+        sel.unpromoted = true;
+      }
+
+      if (doPromote) {
         piece = promote(piece.toUpperCase());
         if (player === "white") piece = piece.toLowerCase();
         sel.promoted = true;
-      } else {
-        // 人間の場合はダイアログ確認
-        const mustPromote =
-          (base === "P" || base === "L") && (y === (player === "black" ? 0 : 8)) ||
-          (base === "N") && (y === (player === "black" ? 0 : 8) || y === (player === "black" ? 1 : 7));
         
-        if (mustPromote || confirm("成りますか？")) {
-          piece = promote(piece.toUpperCase());
-          if (player === "white") piece = piece.toLowerCase();
-          sel.promoted = true;
-          
-          if (promoteSound) {
-            promoteSound.currentTime = 0;
-            promoteSound.volume = 0.8;
-            promoteSound.play().catch(() => {});
-          }
-        } else {
-          sel.unpromoted = true;
+        // 成り音再生
+        if (promoteSound) {
+          promoteSound.currentTime = 0;
+          promoteSound.volume = 0.8;
+          promoteSound.play().catch(() => {});
         }
+
+        // ★★★ 盤面を光らせる処理 ★★★
+        const boardTable = document.getElementById("board");
+        // 念のため既存のエフェクトを削除
+        boardTable.classList.remove("flash-green", "flash-orange");
+        // リフローを発生させてアニメーションをリセットするハック
+        void boardTable.offsetWidth;
+
+        if (base === "R") { // 飛車(R)が成った場合
+          boardTable.classList.add("flash-green");
+          setTimeout(() => {
+            boardTable.classList.remove("flash-green");
+          }, 2000);
+        } else if (base === "B") { // 角(B)が成った場合
+          boardTable.classList.add("flash-orange");
+          setTimeout(() => {
+            boardTable.classList.remove("flash-orange");
+          }, 2000);
+        }
+        // ★★★ ここまで ★★★
       }
+      
+      // --- 【ここまで】 ---
     }
 
     boardState[sel.y][sel.x] = "";
@@ -323,8 +342,8 @@ function movePieceWithSelected(sel, x, y) {
   kifu[kifu.length - 1] = formatMove(sel, x, y, pieceBefore, boardBefore, moveNumber);
   lastMoveTo = { x, y };
 
-  // 人間の指し手を記録（AIの特定の定跡外し判定用）
-  if (!isSimulating && turn !== cpuSide) {
+  // 人間の指し手を記録（AIの特定の定跡外し判定用 - PvPではあまり意味ないが互換性維持）
+  if (/* !isSimulating && */ turn !== /* cpuSide */ "") { // PvPなので常に記録
     lastPlayerMove = {
       piece: pieceBefore.replace("+","").toUpperCase(),
       toX: x,
@@ -343,11 +362,6 @@ function movePieceWithSelected(sel, x, y) {
     stopTimer();
   }
 
-  // CPU思考開始（遅延実行）
-  //if (!isSimulating && cpuEnabled && turn === cpuSide && !gameOver) {
-  //  setTimeout(() => cpuMove(), 1000);
-  //}
-
   moveCount++;
 
   // 1. 500手ルール
@@ -364,7 +378,6 @@ function movePieceWithSelected(sel, x, y) {
     gameOver = true;
     winner = turn === "black" ? "white" : "black";
     if (typeof showKifu === "function") showKifu();
-    // ここでreturnしないのは千日手判定も一応通すためだが、詰みが確定すれば終了
     return;
   }
 
