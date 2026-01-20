@@ -288,11 +288,13 @@ function movePieceWithSelected(sel, x, y) {
     if (!isPromoted && canPromote(base) &&
        (isInPromotionZone(sel.y, player) || isInPromotionZone(y, player))) {
 
+      // --- 【修正済み】光る処理の統合 ---
+      
+      let doPromote = false; // 成るかどうかのフラグ
+
       if (cpuEnabled && turn === cpuSide) {
-        // CPUは条件を満たせば必ず成る（AIロジックによる）
-        piece = promote(piece.toUpperCase());
-        if (player === "white") piece = piece.toLowerCase();
-        sel.promoted = true;
+        // CPUは条件を満たせば必ず成る
+        doPromote = true;
       } else {
         // 人間の場合はダイアログ確認
         const mustPromote =
@@ -300,19 +302,48 @@ function movePieceWithSelected(sel, x, y) {
           (base === "N") && (y === (player === "black" ? 0 : 8) || y === (player === "black" ? 1 : 7));
         
         if (mustPromote || confirm("成りますか？")) {
-          piece = promote(piece.toUpperCase());
-          if (player === "white") piece = piece.toLowerCase();
-          sel.promoted = true;
-          
-          if (promoteSound) {
-            promoteSound.currentTime = 0;
-            promoteSound.volume = 0.8;
-            promoteSound.play().catch(() => {});
-          }
+          doPromote = true;
         } else {
           sel.unpromoted = true;
         }
       }
+
+      // 成る場合の処理
+      if (doPromote) {
+        piece = promote(piece.toUpperCase());
+        if (player === "white") piece = piece.toLowerCase();
+        sel.promoted = true;
+        
+        if (promoteSound) {
+          promoteSound.currentTime = 0;
+          promoteSound.volume = 0.8;
+          promoteSound.play().catch(() => {});
+        }
+
+        // ★★★ 盤面を光らせる処理 ★★★
+        const boardTable = document.getElementById("board");
+        // 念のため既存のエフェクトを削除
+        boardTable.classList.remove("flash-green", "flash-orange");
+        // リフローを発生させてアニメーションをリセットするハック
+        void boardTable.offsetWidth;
+
+        if (base === "R") { // 飛車(R)が成った場合
+          boardTable.classList.add("flash-green");
+          // 2秒後にクラスを削除
+          setTimeout(() => {
+            boardTable.classList.remove("flash-green");
+          }, 2000);
+        } else if (base === "B") { // 角(B)が成った場合
+          boardTable.classList.add("flash-orange");
+          // 2秒後にクラスを削除
+          setTimeout(() => {
+            boardTable.classList.remove("flash-orange");
+          }, 2000);
+        }
+        // ★★★ ここまで ★★★
+      }
+      
+      // --- 重複していた古いコードブロックを削除しました ---
     }
 
     boardState[sel.y][sel.x] = "";
