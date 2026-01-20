@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>しおや将棋</title>
+  <style>
+    /* 背景画像の設定 */
+    body {
+      background-image: url('script/image/shogi_title.PNG'); /* 背景画像の指定 */
+      background-size: cover; /* 画像を全体に合わせてリサイズ */
+      background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
+      background-position: center center; /* 画像を中央に配置 */
+      background-attachment: fixed; /* スクロールしても背景が動かないように設定 */
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;  /* 横方向中央揃え */
+      align-items: center;      /* 縦方向中央揃え */
+      height: 100vh;            /* 画面の高さを100%に設定 */
+    }
+
+    /* メニューのスタイル */
+    #menu {
+      text-align: center;       /* テキストを中央に配置 */
+      margin-bottom: 50px;      /* 下に少しスペースを作成 */
+    }
+
+    h1 {
+      font-size: 5rem;
+      color: #FFB347; /* 薄いオレンジ色に変更 */
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px rgba(0, 128, 0, 0.7), -2px -2px 5px rgba(0, 128, 0, 0.7); /* 緑色の縁取り */
+    }
+
+    h2 {
+      font-size: 5rem;
+      color: #FFB347; /* 薄いオレンジ色に変更 */
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 5px rgba(0, 128, 0, 0.7), -2px -2px 5px rgba(0, 128, 0, 0.7); /* 緑色の縁取り */
+    }
+
+    /* 難易度選択メニュー（共通スタイル） */
+    #practiceMenu, #onePlayerMenu {
+      text-align: center;  /* テキストを中央に配置 */
+      display: none;       /* 初期状態で非表示 */
+      margin-bottom: 300px;      /* 下に少しスペースを作成 */
+    }
+
+    /* 難易度選択ボタンのスタイル（共通スタイル） */
+    #practiceMenu button, #onePlayerMenu button {
+      width: 200px;
+      height: 70px;
+      margin: 10px 0;
+      font-size: 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      color: white;
+      border: none;
+      transition: background-color 0.3s;
+    }
+
+    #practiceMenu button:hover, #onePlayerMenu button:hover {
+      background-color: #45a049; /* ホバー時の色 */
+    }
+
+    /* メインメニューのボタン */
+    #menu button {
+      width: 200px;
+      height: 70px;
+      margin: 10px 0;
+      font-size: 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      color: white;
+      border: none;
+      transition: background-color 0.3s;
+    }
+
+    #menu button:hover {
+      background-color: #45a049; /* ホバー時の色 */
+    }
+
+    /* お知らせボックスのスタイル */
+    #announcementBox {
+      width: 300px;  /* 幅を固定 */
+      height: 200px; /* 高さを固定 */
+      background-color: rgba(255, 165, 0, 0.5); /* 半透明のオレンジ色 */
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px; /* ボタンの直下に配置 */
+      text-align: center;
+      overflow-y: auto; 
+      margin-left: auto;  /* 左右中央に揃える */
+      margin-right: auto; /* 左右中央に揃える */
+    }
+
+    #announcementBox h3 {
+      margin: 0;
+      font-size: 24px;
+      color: white;
+    }
+
+    #announcementBox p {
+      font-size: 18px;
+      color: white;
+    }
+
+    /* ボタン共通のスタイル */
+    button {
+      font-size: 1.5rem;
+      padding: 15px 30px;
+      margin: 10px;
+      cursor: pointer;
+      background-color: rgba(0, 0, 0, 0.5); /* 背景色を薄く */
+      color: white; /* ボタンの文字色を白に */
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: rgba(0, 0, 0, 0.8); /* ホバー時に色を濃く */
+    }
+
+  </style>
+</head>
+<body>
+
+  <div id="menu">
+    <h1>しおや将棋</h1>
+    <button onclick="showPracticeMenu()">れんしゅう</button>
+    <button onclick="showOnePlayerMenu()">ひとりで</button>
+    <button onclick="startPlayerVsPlayer()">ふたりで</button>
+
+    <div id="announcementBox">
+      <h3>お知らせ</h3>
+      <p>
+        CPUが止まってしまう問題を修正しました。<br><br>
+        タイマーを追加しました。<br><br>
+        「ひとりで」に難易度「おあそび」を追加しました。<br><br>
+        最終更新<br>
+        2016年1月19日
+      </p>
+    </div>
+  </div>
+
+  <div id="practiceMenu">
+    <h2>練習相手選択</h2>
+    <button onclick="startGame('saijaku')">たわむれ</button>
+    <button onclick="startGame('easy')">おあそび</button>
+    <button onclick="startGame('normal')">たしなみ</button>
+  </div>
+
+  <div id="onePlayerMenu">
+    <h2>対戦相手選択</h2>
+    <button onclick="startGame('hard1')">こみや</button>
+    <button onclick="startGame('hard2')">しおや</button>
+  </div>
+
+  <script>
+    function startPlayerVsPlayer() {
+      // プレイヤー同士の対戦モードを開始
+      window.location.href = "player_vs_player.html"; 
+    }
+
+    // 「れんしゅう」メニューを表示する関数
+    function showPracticeMenu() {
+      document.getElementById('menu').style.display = 'none';
+      document.getElementById('practiceMenu').style.display = 'block';
+    }
+
+    // 「ひとりで」メニューを表示する関数
+    function showOnePlayerMenu() {
+      document.getElementById('menu').style.display = 'none';
+      document.getElementById('onePlayerMenu').style.display = 'block';
+    }
+
+    function startGame(difficulty) {
+      // 選択された難易度に応じたページに遷移
+      if (difficulty === 'saijaku') {
+        window.location.href = "cpu_tawamure.html";
+      } else if (difficulty === 'easy') {
+        window.location.href = "cpu_oasobi.html";
+      } else if (difficulty === 'normal') {
+        window.location.href = "cpu_tashinami.html";
+      } else if (difficulty === 'hard1') {
+        window.location.href = "cpu_komiya.html";
+      } else if (difficulty === 'hard2') {
+        window.location.href = "cpu_shioya.html";
+      }
+    }
+  </script>
+
+</body>
+</html>

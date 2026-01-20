@@ -1,0 +1,175 @@
+body {
+  font-family: sans-serif;
+  background: url('image/haikei.PNG'); /* 背景画像を指定 */
+  background-repeat: repeat; /* 画像を繰り返して表示 */
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  padding: 20px;
+}
+
+#game { display: flex; gap: 20px; }
+#center { text-align: center; }
+#status { font-weight: bold; margin-bottom: 5px; }
+#checkStatus { color: red; font-weight: bold; margin-bottom: 10px; }
+table { border-collapse: collapse; background: #deb887; }
+td { width: 50px; height: 50px; border: 1px solid #333; text-align: center; vertical-align: middle; font-size: 24px; cursor: pointer; user-select: none; }
+td.selected { background: yellow; }
+td.move { background: #90ee90; }
+
+/* 駒台の設定 */
+
+.hand {
+  width: 160px;
+  height: 320px;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.hand.active {
+  box-shadow: 0 0 15px 5px gold;
+  border-color: gold;
+}
+
+
+/* 後手 */
+.white-hand {
+  background-image: url('image/karui_2p.PNG');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* 先手 */
+.black-hand {
+  background-image: url('image/karui_1p.PNG');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+.hand div {
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  justify-items: center;
+  align-content: start; 
+}
+
+.hand h3 {
+  margin: 0 0 5px 0;
+  font-size: 14px;
+  text-align: center;
+  color: black;
+  text-shadow:
+    -1px -1px 0 white,
+     1px -1px 0 white,
+    -1px  1px 0 white,
+     1px  1px 0 white;
+}
+
+.hand span {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #333;
+  cursor: pointer;
+  font-size: 18px;
+  background: #f5deb3;
+}
+
+.hand span.selected { background: yellow; }
+#controls { margin-top: 10px; text-align: center; }
+button { padding: 6px 12px; font-size: 14px; cursor: pointer; }
+
+#game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+#kifu {
+  width: 400px;
+  height: 200px;
+  overflow-y: auto; 
+  border: 1px solid #333;
+  padding: 6px;
+  background: #deb887;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.side {
+  display: flex;
+
+  flex-direction: column;
+  justify-content: space-between;
+  height: 500px;
+}
+
+.side.left {
+  align-items: flex-end;
+}
+
+.side.right {
+  align-items: flex-start;
+}
+
+/* 待ったボタンのスタイル */
+#undoBtn {
+  width: 160px;
+  height: 160px;
+  font-size: 36px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  background-image: url('image/hyoshiki_red.PNG'); /* 「待った」用の画像 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #0C2CB9;
+  text-shadow:
+    -1px -1px 0 white,
+     1px -1px 0 white,
+    -1px  1px 0 white,
+     1px  1px 0 white;
+
+}
+
+/* 投了ボタンのスタイル */
+#resignBtn {
+  width: 160px;
+  height: 160px;
+  font-size: 36px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  background-image: url('image/hyoshiki.PNG'); /* 「投了」用の画像 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #B90C2C;
+  text-shadow:
+    -1px -1px 0 white,
+     1px -1px 0 white,
+    -1px  1px 0 white,
+     1px  1px 0 white;
+
+}
+
+
+/* 移動した場所に色をつける */
+.moved {
+  background-color: #f58220; /* 明るい黄色 */
+}
+
+
