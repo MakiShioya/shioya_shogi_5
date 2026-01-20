@@ -183,3 +183,28 @@ button { padding: 6px 12px; font-size: 14px; cursor: pointer; }
 .moved {
   background-color: #f58220; /* 明るい黄色 */
 }
+
+/* --- ここから追加 --- */
+
+/* 緑色に光るアニメーション (飛車成用) */
+@keyframes flashGreenAnim {
+  0% { box-shadow: 0 0 50px 20px limegreen; border: 2px solid limegreen; }
+  20% { box-shadow: 0 0 50px 20px limegreen; border: 2px solid limegreen; }
+  100% { box-shadow: none; border: 1px solid #333; }
+}
+
+/* オレンジ色に光るアニメーション (角成用) */
+@keyframes flashOrangeAnim {
+  0% { box-shadow: 0 0 50px 20px orange; border: 2px solid orange; }
+  20% { box-shadow: 0 0 50px 20px orange; border: 2px solid orange; }
+  100% { box-shadow: none; border: 1px solid #333; }
+}
+
+/* JavaScriptから付与するクラス */
+.flash-green {
+  animation: flashGreenAnim 2s ease-out forwards;
+}
+
+.flash-orange {
+  animation: flashOrangeAnim 2s ease-out forwards;
+}
